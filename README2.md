@@ -10,7 +10,7 @@ components:
 
 
 A Lake house POC implementation
-![Architecture](imgs/CT (9).jpeg "Architecture")
+![Architecture](imgs/CT_(9).jpeg "Architecture")
 
 ## Prerequisites
 * [docker engine version 20.10.2](https://www.docker.com/products/docker-desktop)

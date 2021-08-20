@@ -1,0 +1,16 @@
+version: '3'
+services:
+  zeppelin:
+    image: zeppelin
+    container_name: zeppelin
+    env_file:
+      - docker/.env
+    build:
+      context: .
+      dockerfile: docker/zeppelin/Dockerfile
+    ports:
+      - "9090:8080"
+      - "4040:4040"
+    volumes:
+      - "./docker/zeppelin/users.parquet:/zeppelin/example-files/users.parquet"
+      - "./docker/base/log4j.properties:/opt/zeppelin/conf/log4j.properties"

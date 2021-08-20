@@ -1,0 +1,1391 @@
+﻿{
+  "paragraphs": [
+    {
+      "title": "Use Generic Inline Configuration instead of Interpreter Setting",
+      "text": "%md\n## Setting up the spark environment\nThis is the starting point of the wordcount example.\nWe will setup the basic configurations needed to setup our spark application and read information from our mock s3 bucket.\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:36:47+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "title": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Setting up the spark environment</h2>\n<p>This is the starting point of the wordcount example.<br />\nWe will setup the basic configurations needed to setup our spark application and read information from our mock s3 bucket.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588214762316_737450410",
+      "id": "20180531-100923_1307061430",
+      "dateCreated": "2020-04-30T10:46:02+0000",
+      "dateStarted": "2021-08-20T07:36:47+0000",
+      "dateFinished": "2021-08-20T07:36:47+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:2667"
+    },
+    {
+      "text": "%md\n## A little bit about Zeppelin notebooks\n\nBefore we start let's explain a little about Zeppelin notebooks,a Zeppelin notebook allows users to write paragraphs (like this one) and run them in the browser.\n\nThe first word preceded by `%` tells Zeppelin what interpreter or \"engine\" should run the paragraph.\nFor example, this paragraph is run by the `%md` interpreter, if you click the `Show Editor` button (or `control+option+E` on your keyboard) on the top-right of this paragraph you'll see the markdown that generated this explanation.\n\nTry adding some text and click the `Run this paragraph` button on the top-right of this paragraph.\n\nZeppelin will launch the markdown interpreter to re-proceess the markdown in this paragraph and update the output area.\n\nWhen you're done, hide the editor if you like.",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:36:50+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>A little bit about Zeppelin notebooks</h2>\n<p>Before we start let&rsquo;s explain a little about Zeppelin notebooks,a Zeppelin notebook allows users to write paragraphs (like this one) and run them in the browser.</p>\n<p>The first word preceded by <code>%</code> tells Zeppelin what interpreter or &ldquo;engine&rdquo; should run the paragraph.<br />\nFor example, this paragraph is run by the <code>%md</code> interpreter, if you click the <code>Show Editor</code> button (or <code>control+option+E</code> on your keyboard) on the top-right of this paragraph you&rsquo;ll see the markdown that generated this explanation.</p>\n<p>Try adding some text and click the <code>Run this paragraph</code> button on the top-right of this paragraph.</p>\n<p>Zeppelin will launch the markdown interpreter to re-proceess the markdown in this paragraph and update the output area.</p>\n<p>When you&rsquo;re done, hide the editor if you like.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614146895981_437874226",
+      "id": "paragraph_1614146895981_437874226",
+      "dateCreated": "2021-02-24T06:08:15+0000",
+      "dateStarted": "2021-08-20T07:36:50+0000",
+      "dateFinished": "2021-08-20T07:36:50+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2668"
+    },
+    {
+      "title": "Inline Configuration for standalone spark cluster",
+      "text": "%spark.conf\n# This will point to the path we installed spark on the zeppelin docker image\nSPARK_HOME /opt/zeppelin/spark/\n\n# Will set the application name in the spark UI\nspark.app.name newSparkApp\n\n# set driver memory to 1g\nspark.driver.memory 1g\n\n# set executor memory 1g\nspark.executor.memory  1g\nspark.executor.cores 2\n\n# set execution standalone\nmaster spark://spark-master:7077\n\n# Will set the spark driver to be our zeppelin docker\nspark.submit.deployMode\tclient\n\n# Needed for our writing efficiently to our s3 minio docker - read more at https://spark.apache.org/docs/3.0.1/cloud-integration.html\nspark.speculation false\nspark.hadoop.mapreduce.fileoutputcommitter.algorithm.version 2\nspark.hadoop.fs.s3.impl org.apache.hadoop.fs.s3a.S3AFileSystem\n\n# Set to allow us to \"point\" to our mock s3 and use it interchangibly \nspark.hadoop.fs.s3a.endpoint http://minio:9000\nspark.hadoop.fs.s3a.path.style.access true\nspark.hadoop.fs.s3a.connection.ssl.enabled false\n\n\n# Hive metastore properties\nhive.metastore.uris thrift://hive-metastore:9083\nspark.sql.warehouse.dir s3a://spark/warehouse/\nspark.sql.catalogImplementation hive\nspark.hadoop.metastore.catalog.default hive\n\n# Delta lake packages properties\nspark.jars.packages io.delta:delta-core_2.12:0.8.0\nspark.sql.extensions io.delta.sql.DeltaSparkSessionExtension \nspark.sql.catalog.spark_catalog org.apache.spark.sql.delta.catalog.DeltaCatalog\n\n# S3 access and secret keys\nspark.hadoop.fs.s3a.access.key abc \nspark.hadoop.fs.s3a.secret.key xyzxyzxyz\n\n# Any other spark properties can be set here. Here's avaliable spark configruation you can set. (http://spark.apache.org/docs/latest/configuration.html)\n\n# When you're done reading, run this paragraph to set apply the settings\n\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:30:47+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true,
+        "title": true,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588214762316_1311021507",
+      "id": "20180531-101615_648039641",
+      "dateCreated": "2020-04-30T10:46:02+0000",
+      "dateStarted": "2021-08-20T07:30:47+0000",
+      "dateFinished": "2021-08-20T07:30:47+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2669"
+    },
+    {
+      "text": "%md \n### Sanity test!\nYou can run the paragraph on the right to try a simple spark function that reads a local parquet file and \nprints it to the output section.\nThis will launch a spark application that will read a small `parquet` file and print it's schema and contents \nto the notebook.\n\nThis creates a Dataframe, which is a representation of our data organised by columns.\n\nYou can visit the [spark UI](localhost:8080) or the [spark driver](localhost:4040) to check it's progress.",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:36:54+0000",
+      "progress": 0,
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "tableHide": false,
+        "results": {},
+        "enabled": true,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorHide": true,
+        "editorMode": "ace/mode/markdown"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Sanity test!</h3>\n<p>You can run the paragraph on the right to try a simple spark function that reads a local parquet file and<br />\nprints it to the output section.<br />\nThis will launch a spark application that will read a small <code>parquet</code> file and print it&rsquo;s schema and contents<br />\nto the notebook.</p>\n<p>This creates a Dataframe, which is a representation of our data organised by columns.</p>\n<p>You can visit the <a href=\"localhost:8080\">spark UI</a> or the <a href=\"localhost:4040\">spark driver</a> to check it&rsquo;s progress.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1613400399813_1327092738",
+      "id": "paragraph_1613400399813_1327092738",
+      "dateCreated": "2021-02-15T14:46:39+0000",
+      "dateStarted": "2021-08-20T07:36:54+0000",
+      "dateFinished": "2021-08-20T07:36:54+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2670"
+    },
+    {
+      "title": "",
+      "text": "%spark\n\nimport spark.implicits._\n\nval df = spark.read.format(\"parquet\").load(\"/zeppelin/example-files/users.parquet\")  \ndf.printSchema\ndf.show\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:30:53+0000",
+      "progress": 100,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- name: string (nullable = true)\n |-- favorite_color: string (nullable = true)\n |-- favorite_numbers: array (nullable = true)\n |    |-- element: integer (containsNull = true)\n\n+------+--------------+----------------+\n|  name|favorite_color|favorite_numbers|\n+------+--------------+----------------+\n|Alyssa|          null|  [3, 9, 15, 20]|\n|   Ben|           red|              []|\n+------+--------------+----------------+\n\nimport spark.implicits._\n\u001b[1m\u001b[34mdf\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [name: string, favorite_color: string ... 1 more field]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=0",
+              "$$hashKey": "object:3557"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=1",
+              "$$hashKey": "object:3558"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588214762324_60233930",
+      "id": "20180530-222838_1995256600",
+      "dateCreated": "2020-04-30T10:46:02+0000",
+      "dateStarted": "2021-08-20T07:30:53+0000",
+      "dateFinished": "2021-08-20T07:31:25+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2671"
+    },
+    {
+      "text": "%md \n## Reading from s3\nSince we've setup a [minio](https://github.com/minio/minio) s3 docker, we can now read \nour airlines dataset into our spark application",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:36:58+0000",
+      "progress": 0,
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 90.4545,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Reading from s3</h2>\n<p>Since we&rsquo;ve setup a <a href=\"https://github.com/minio/minio\">minio</a> s3 docker, we can now read<br />\nour airlines dataset into our spark application</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1613402011974_1184306943",
+      "id": "paragraph_1613402011974_1184306943",
+      "dateCreated": "2021-02-15T15:13:31+0000",
+      "dateStarted": "2021-08-20T07:36:58+0000",
+      "dateFinished": "2021-08-20T07:36:58+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2672"
+    },
+    {
+      "text": "%spark\n\nimport spark.implicits._\n\nval airlines = spark.read.format(\"csv\").load(\"s3a://word-count/flights-data/airlines.csv\")\n\nairlines.printSchema\nairlines.show",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:30:58+0000",
+      "progress": 100,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorHide": false,
+        "editorMode": "ace/mode/scala",
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- _c0: string (nullable = true)\n |-- _c1: string (nullable = true)\n |-- _c2: string (nullable = true)\n |-- _c3: string (nullable = true)\n |-- _c4: string (nullable = true)\n |-- _c5: string (nullable = true)\n |-- _c6: string (nullable = true)\n |-- _c7: string (nullable = true)\n\n+---+--------------------+---+----+----+--------------+--------------+---+\n|_c0|                 _c1|_c2| _c3| _c4|           _c5|           _c6|_c7|\n+---+--------------------+---+----+----+--------------+--------------+---+\n| -1|             Unknown| \\N|   -| N/A|            \\N|            \\N|  Y|\n|  1|      Private flight| \\N|   -| N/A|          null|          null|  Y|\n|  2|         135 Airways| \\N|null| GNL|       GENERAL| United States|  N|\n|  3|       1Time Airline| \\N|  1T| RNX|       NEXTIME|  South Africa|  Y|\n|  4|2 Sqn No 1 Elemen...| \\N|null| WYT|          null|United Kingdom|  N|\n|  5|     213 Flight Unit| \\N|null| TFU|          null|        Russia|  N|\n|  6|223 Flight Unit S...| \\N|null| CHD|CHKALOVSK-AVIA|        Russia|  N|\n|  7|   224th Flight Unit| \\N|null| TTF|    CARGO UNIT|        Russia|  N|\n|  8|         247 Jet Ltd| \\N|null| TWF|  CLOUD RUNNER|United Kingdom|  N|\n|  9|         3D Aviation| \\N|null| SEC|       SECUREX| United States|  N|\n| 10|         40-Mile Air| \\N|  Q5| MLA|      MILE-AIR| United States|  Y|\n| 11|              4D Air| \\N|null| QRT|       QUARTET|      Thailand|  N|\n| 12|611897 Alberta Li...| \\N|null| THD|         DONUT|        Canada|  N|\n| 13|    Ansett Australia| \\N|  AN| AAA|        ANSETT|     Australia|  Y|\n| 14|Abacus International| \\N|  1B|null|          null|     Singapore|  Y|\n| 15|     Abelag Aviation| \\N|  W9| AAB|           ABG|       Belgium|  N|\n| 16|      Army Air Corps| \\N|null| AAC|       ARMYAIR|United Kingdom|  N|\n| 17|Aero Aviation Cen...| \\N|null| AAD|       SUNRISE|        Canada|  N|\n| 18|Aero Servicios Ej...| \\N|null| SII|        ASEISA|        Mexico|  N|\n| 19|         Aero Biniza| \\N|null| BZS|        BINIZA|        Mexico|  N|\n+---+--------------------+---+----+----+--------------+--------------+---+\nonly showing top 20 rows\n\nimport spark.implicits._\n\u001b[1m\u001b[34mairlines\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [_c0: string, _c1: string ... 6 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=2",
+              "$$hashKey": "object:3666"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=3",
+              "$$hashKey": "object:3667"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1613403849055_1657905061",
+      "id": "paragraph_1613403849055_1657905061",
+      "dateCreated": "2021-02-15T15:44:09+0000",
+      "dateStarted": "2021-08-20T07:30:59+0000",
+      "dateFinished": "2021-08-20T07:31:36+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2673"
+    },
+    {
+      "text": "%md\n## What's in a schema?\nIn the last paragraph we loaded our data set from MinIO and printed the schema.\nThe schema is a the description of the structure of your data, it defines how Spark treats each column of the CSV.\nSo it's what defines if we treat a column containing a `123` as a string, integer or double.\n\nReading data this way, creates a dataframe, this is a \"row\" of data that has columns according to the schema we defined.\n\nLet's define a schema in the next `%spark` paragraph and read our flight data.\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:37:00+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>What&rsquo;s in a schema?</h2>\n<p>In the last paragraph we loaded our data set from MinIO and printed the schema.<br />\nThe schema is a the description of the structure of your data, it defines how Spark treats each column of the CSV.<br />\nSo it&rsquo;s what defines if we treat a column containing a <code>123</code> as a string, integer or double.</p>\n<p>Reading data this way, creates a dataframe, this is a &ldquo;row&rdquo; of data that has columns according to the schema we defined.</p>\n<p>Let&rsquo;s define a schema in the next <code>%spark</code> paragraph and read our flight data.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614697262960_1411699733",
+      "id": "paragraph_1614697262960_1411699733",
+      "dateCreated": "2021-03-02T15:01:02+0000",
+      "dateStarted": "2021-08-20T07:37:00+0000",
+      "dateFinished": "2021-08-20T07:37:00+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2674"
+    },
+    {
+      "text": "%spark\nimport spark.implicits._\nimport org.apache.spark.sql.types._\n\nval airlineSchema = StructType(Array(\n    StructField(\"id\",IntegerType,true),\n    StructField(\"airlineName\",StringType,true),\n    StructField(\"alias\",StringType,true),\n    StructField(\"iataCode\", StringType, true),\n    StructField(\"icaoCode\", StringType, true),\n    StructField(\"callsign\", StringType, true),\n    StructField(\"country\", StringType, true),\n    StructField(\"active\", StringType, true)\n  ))\n  \n  val airlinesWithSchema =  spark.read.format(\"csv\")\n                                .schema(airlineSchema)\n                                .load(\"s3a://word-count/flights-data/airlines.csv\")\n\nairlinesWithSchema.printSchema\nairlinesWithSchema.show",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:31:32+0000",
+      "progress": 100,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- id: integer (nullable = true)\n |-- airlineName: string (nullable = true)\n |-- alias: string (nullable = true)\n |-- iataCode: string (nullable = true)\n |-- icaoCode: string (nullable = true)\n |-- callsign: string (nullable = true)\n |-- country: string (nullable = true)\n |-- active: string (nullable = true)\n\n+---+--------------------+-----+--------+--------+--------------+--------------+------+\n| id|         airlineName|alias|iataCode|icaoCode|      callsign|       country|active|\n+---+--------------------+-----+--------+--------+--------------+--------------+------+\n| -1|             Unknown|   \\N|       -|     N/A|            \\N|            \\N|     Y|\n|  1|      Private flight|   \\N|       -|     N/A|          null|          null|     Y|\n|  2|         135 Airways|   \\N|    null|     GNL|       GENERAL| United States|     N|\n|  3|       1Time Airline|   \\N|      1T|     RNX|       NEXTIME|  South Africa|     Y|\n|  4|2 Sqn No 1 Elemen...|   \\N|    null|     WYT|          null|United Kingdom|     N|\n|  5|     213 Flight Unit|   \\N|    null|     TFU|          null|        Russia|     N|\n|  6|223 Flight Unit S...|   \\N|    null|     CHD|CHKALOVSK-AVIA|        Russia|     N|\n|  7|   224th Flight Unit|   \\N|    null|     TTF|    CARGO UNIT|        Russia|     N|\n|  8|         247 Jet Ltd|   \\N|    null|     TWF|  CLOUD RUNNER|United Kingdom|     N|\n|  9|         3D Aviation|   \\N|    null|     SEC|       SECUREX| United States|     N|\n| 10|         40-Mile Air|   \\N|      Q5|     MLA|      MILE-AIR| United States|     Y|\n| 11|              4D Air|   \\N|    null|     QRT|       QUARTET|      Thailand|     N|\n| 12|611897 Alberta Li...|   \\N|    null|     THD|         DONUT|        Canada|     N|\n| 13|    Ansett Australia|   \\N|      AN|     AAA|        ANSETT|     Australia|     Y|\n| 14|Abacus International|   \\N|      1B|    null|          null|     Singapore|     Y|\n| 15|     Abelag Aviation|   \\N|      W9|     AAB|           ABG|       Belgium|     N|\n| 16|      Army Air Corps|   \\N|    null|     AAC|       ARMYAIR|United Kingdom|     N|\n| 17|Aero Aviation Cen...|   \\N|    null|     AAD|       SUNRISE|        Canada|     N|\n| 18|Aero Servicios Ej...|   \\N|    null|     SII|        ASEISA|        Mexico|     N|\n| 19|         Aero Biniza|   \\N|    null|     BZS|        BINIZA|        Mexico|     N|\n+---+--------------------+-----+--------+--------+--------------+--------------+------+\nonly showing top 20 rows\n\nimport spark.implicits._\nimport org.apache.spark.sql.types._\n\u001b[1m\u001b[34mairlineSchema\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.types.StructType\u001b[0m = StructType(StructField(id,IntegerType,true), StructField(airlineName,StringType,true), StructField(alias,StringType,true), StructField(iataCode,StringType,true), StructField(icaoCode,StringType,true), StructField(callsign,StringType,true), StructField(country,StringType,true), StructField(active,StringType,true))\n\u001b[1m\u001b[34mairlinesWithSchema\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id: int, airlineName: string ... 6 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=4",
+              "$$hashKey": "object:3775"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614698363348_2020104831",
+      "id": "paragraph_1614698363348_2020104831",
+      "dateCreated": "2021-03-02T15:19:23+0000",
+      "dateStarted": "2021-08-20T07:31:32+0000",
+      "dateFinished": "2021-08-20T07:31:39+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2675"
+    },
+    {
+      "text": "%md\n## Dataframe vs DataSet\nIn the previous paragraph we saw how we can define a schema describing a row from the CSV.\n\nAn additional way to handle this would be to use a DataSet.\n\nA DataSet allow us to read data into a Dataframe but to use a strongly-typed API.\n\nSo in our case we could declare an `Airline` class and load our data into a typed Scala object.\n\nLet's see an example in the next paragraph.\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:37:04+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Dataframe vs DataSet</h2>\n<p>In the previous paragraph we saw how we can define a schema describing a row from the CSV.</p>\n<p>An additional way to handle this would be to use a DataSet.</p>\n<p>A DataSet allow us to read data into a Dataframe but to use a strongly-typed API.</p>\n<p>So in our case we could declare an <code>Airline</code> class and load our data into a typed Scala object.</p>\n<p>Let&rsquo;s see an example in the next paragraph.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614712387868_2078024181",
+      "id": "paragraph_1614712387868_2078024181",
+      "dateCreated": "2021-03-02T19:13:07+0000",
+      "dateStarted": "2021-08-20T07:37:04+0000",
+      "dateFinished": "2021-08-20T07:37:04+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2676"
+    },
+    {
+      "text": "%spark\nimport spark.implicits._\n\ncase class AirlineDS(id: Integer, airlineName: String, alias: String,\n                    iataCode: String, icaoCode: String, callSign: String, country: String, active: String )\n\n\nval airlineDS = spark.read.format(\"csv\")\n                                .schema(airlineSchema)\n                                .load(\"s3a://word-count/flights-data/airlines.csv\").as[AirlineDS]\n                                \nairlineDS.printSchema\nairlineDS.show\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:31:41+0000",
+      "progress": 100,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- id: integer (nullable = true)\n |-- airlineName: string (nullable = true)\n |-- alias: string (nullable = true)\n |-- iataCode: string (nullable = true)\n |-- icaoCode: string (nullable = true)\n |-- callsign: string (nullable = true)\n |-- country: string (nullable = true)\n |-- active: string (nullable = true)\n\n+---+--------------------+-----+--------+--------+--------------+--------------+------+\n| id|         airlineName|alias|iataCode|icaoCode|      callsign|       country|active|\n+---+--------------------+-----+--------+--------+--------------+--------------+------+\n| -1|             Unknown|   \\N|       -|     N/A|            \\N|            \\N|     Y|\n|  1|      Private flight|   \\N|       -|     N/A|          null|          null|     Y|\n|  2|         135 Airways|   \\N|    null|     GNL|       GENERAL| United States|     N|\n|  3|       1Time Airline|   \\N|      1T|     RNX|       NEXTIME|  South Africa|     Y|\n|  4|2 Sqn No 1 Elemen...|   \\N|    null|     WYT|          null|United Kingdom|     N|\n|  5|     213 Flight Unit|   \\N|    null|     TFU|          null|        Russia|     N|\n|  6|223 Flight Unit S...|   \\N|    null|     CHD|CHKALOVSK-AVIA|        Russia|     N|\n|  7|   224th Flight Unit|   \\N|    null|     TTF|    CARGO UNIT|        Russia|     N|\n|  8|         247 Jet Ltd|   \\N|    null|     TWF|  CLOUD RUNNER|United Kingdom|     N|\n|  9|         3D Aviation|   \\N|    null|     SEC|       SECUREX| United States|     N|\n| 10|         40-Mile Air|   \\N|      Q5|     MLA|      MILE-AIR| United States|     Y|\n| 11|              4D Air|   \\N|    null|     QRT|       QUARTET|      Thailand|     N|\n| 12|611897 Alberta Li...|   \\N|    null|     THD|         DONUT|        Canada|     N|\n| 13|    Ansett Australia|   \\N|      AN|     AAA|        ANSETT|     Australia|     Y|\n| 14|Abacus International|   \\N|      1B|    null|          null|     Singapore|     Y|\n| 15|     Abelag Aviation|   \\N|      W9|     AAB|           ABG|       Belgium|     N|\n| 16|      Army Air Corps|   \\N|    null|     AAC|       ARMYAIR|United Kingdom|     N|\n| 17|Aero Aviation Cen...|   \\N|    null|     AAD|       SUNRISE|        Canada|     N|\n| 18|Aero Servicios Ej...|   \\N|    null|     SII|        ASEISA|        Mexico|     N|\n| 19|         Aero Biniza|   \\N|    null|     BZS|        BINIZA|        Mexico|     N|\n+---+--------------------+-----+--------+--------+--------------+--------------+------+\nonly showing top 20 rows\n\nimport spark.implicits._\ndefined class AirlineDS\n\u001b[1m\u001b[34mairlineDS\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[AirlineDS]\u001b[0m = [id: int, airlineName: string ... 6 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=5",
+              "$$hashKey": "object:3879"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614712913459_10545824",
+      "id": "paragraph_1614712913459_10545824",
+      "dateCreated": "2021-03-02T19:21:53+0000",
+      "dateStarted": "2021-08-20T07:31:41+0000",
+      "dateFinished": "2021-08-20T07:31:43+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2677"
+    },
+    {
+      "text": "%md\n\n## DataSets as Objects\n\nIn the previous paragraph we saw how we can read data and then represent it as a scala case class.\n\nThis can be useful to ensure that typing is checked when running tests, when working in strongly typed languages as it can allow for compile time checking and anlaysis.\n\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:37:07+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>DataSets as Objects</h2>\n<p>In the previous paragraph we saw how we can read data and then represent it as a scala case class.</p>\n<p>This can be useful to ensure that typing is checked when running tests, when working in strongly typed languages as it can allow for compile time checking and anlaysis.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614713294836_1925595498",
+      "id": "paragraph_1614713294836_1925595498",
+      "dateCreated": "2021-03-02T19:28:14+0000",
+      "dateStarted": "2021-08-20T07:37:07+0000",
+      "dateFinished": "2021-08-20T07:37:07+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2678"
+    },
+    {
+      "text": "%md\n## Count all the things \nA common problem we usually need to solve is aggregation, how many times did something appear?\n\nIn this case we may be interested to know how many airlines are based in the United States?\nHow many in Russia?\n\nSince we've created the `airlineDS` dataset let's try to count what are the countries with the most active airlines?",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:37:09+0000",
+      "progress": 0,
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Count all the things</h2>\n<p>A common problem we usually need to solve is aggregation, how many times did something appear?</p>\n<p>In this case we may be interested to know how many airlines are based in the United States?<br />\nHow many in Russia?</p>\n<p>Since we&rsquo;ve created the <code>airlineDS</code> dataset let&rsquo;s try to count what are the countries with the most active airlines?</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1613718993550_1857939506",
+      "id": "paragraph_1613718993550_1857939506",
+      "dateCreated": "2021-02-19T07:16:33+0000",
+      "dateStarted": "2021-08-20T07:37:09+0000",
+      "dateFinished": "2021-08-20T07:37:09+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2679"
+    },
+    {
+      "text": "%spark\nimport org.apache.spark.sql.functions._                       // Let us import the `desc` function\n\nval airlineCountByCountry = airlineDS.groupBy(col(\"country\"))  // Create groups according to the \"Country\" column\n         .agg(count(\"country\") as \"airline-count\")            // Aggregate the size of the groups and count them\n         .orderBy(desc(\"airline-count\"))                      // Order them by largest\n\nairlineCountByCountry.show\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:31:46+0000",
+      "progress": 88,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------------+-------------+\n|       country|airline-count|\n+--------------+-------------+\n| United States|         1099|\n|        Mexico|          440|\n|United Kingdom|          414|\n|        Canada|          323|\n|        Russia|          238|\n|         Spain|          168|\n|       Germany|          135|\n|        France|          123|\n|     Australia|           94|\n|         Italy|           93|\n|  South Africa|           91|\n|       Ukraine|           90|\n|       Nigeria|           85|\n|    Kazakhstan|           79|\n|         China|           72|\n|        Sweden|           70|\n|   Switzerland|           60|\n|        Brazil|           60|\n|      Thailand|           52|\n|   Netherlands|           52|\n+--------------+-------------+\nonly showing top 20 rows\n\nimport org.apache.spark.sql.functions._\n\u001b[1m\u001b[34mairlineCountByCountry\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [country: string, airline-count: bigint]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=6",
+              "$$hashKey": "object:4029"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614697203482_573241868",
+      "id": "paragraph_1614697203482_573241868",
+      "dateCreated": "2021-03-02T15:00:03+0000",
+      "dateStarted": "2021-08-20T07:31:46+0000",
+      "dateFinished": "2021-08-20T07:31:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2680"
+    },
+    {
+      "text": "%md\n## Save it forever\nNow that we have our result, let's save it back to S3 so we can cherish the results forever.",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:37:12+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Save it forever</h2>\n<p>Now that we have our result, let&rsquo;s save it back to S3 so we can cherish the results forever.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614761140739_661165065",
+      "id": "paragraph_1614761140739_661165065",
+      "dateCreated": "2021-03-03T08:45:40+0000",
+      "dateStarted": "2021-08-20T07:37:12+0000",
+      "dateFinished": "2021-08-20T07:37:12+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2681"
+    },
+    {
+      "text": "%spark\n\nairlineCountByCountry\n    .coalesce(1)                  // This ensures that we output 1 file only\n    .write                        // write the new results\n    .mode(\"overwrite\")            // Overwrite any \"old\" data\n    .parquet(\"s3a://word-count/airlines-count/airlines-by-country\") // location to save to\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:31:56+0000",
+      "progress": 99,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=7",
+              "$$hashKey": "object:4123"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=8",
+              "$$hashKey": "object:4124"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614761180110_354405934",
+      "id": "paragraph_1614761180110_354405934",
+      "dateCreated": "2021-03-03T08:46:20+0000",
+      "dateStarted": "2021-08-20T07:31:56+0000",
+      "dateFinished": "2021-08-20T07:32:04+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2682"
+    },
+    {
+      "text": "%md\n\n## Here are the Delta Lake and hive metastore test\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:37:13+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Here are the Delta Lake and hive metastore test</h2>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629444251795_697983538",
+      "id": "paragraph_1629444251795_697983538",
+      "dateCreated": "2021-08-20T07:24:11+0000",
+      "dateStarted": "2021-08-20T07:37:13+0000",
+      "dateFinished": "2021-08-20T07:37:13+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2683"
+    },
+    {
+      "text": "%spark\nairlineCountByCountry.repartition(6)\n// unmanaged external table \nairlineCountByCountry                 // This ensures that we output 1 file only\n    .write\n    .format(\"delta\")                     // write the new results with format delta lake\n    .mode(\"overwrite\")            // Overwrite any \"old\" data\n    .option(\"path\",\"s3a://word-count/airlines-count/airlines-by-country2\").saveAsTable(\"Airline_Count_unmanaged\") // make a hive table out of it",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:32:10+0000",
+      "progress": 100,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=9",
+              "$$hashKey": "object:4222"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=10",
+              "$$hashKey": "object:4223"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=11",
+              "$$hashKey": "object:4224"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=12",
+              "$$hashKey": "object:4225"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629444311659_2063420569",
+      "id": "paragraph_1629444311659_2063420569",
+      "dateCreated": "2021-08-20T07:25:11+0000",
+      "dateStarted": "2021-08-20T07:32:10+0000",
+      "dateFinished": "2021-08-20T07:32:48+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2684"
+    },
+    {
+      "text": "%spark\n// managed table\nairlineCountByCountry                 // This ensures that we output 1 file only\n    .write\n    .format(\"delta\")                     // write the new results with format delta lake\n    .mode(\"overwrite\").saveAsTable(\"Airline_Count_managed\") // make a hive table out of it",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:32:39+0000",
+      "progress": 98,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=13",
+              "$$hashKey": "object:4285"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=14",
+              "$$hashKey": "object:4286"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=15",
+              "$$hashKey": "object:4287"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=16",
+              "$$hashKey": "object:4288"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629444485044_1832401667",
+      "id": "paragraph_1629444485044_1832401667",
+      "dateCreated": "2021-08-20T07:28:05+0000",
+      "dateStarted": "2021-08-20T07:32:39+0000",
+      "dateFinished": "2021-08-20T07:33:00+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2685"
+    },
+    {
+      "text": "spark.catalog.listTables(\"default\").show(10,false)",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:35:22+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------------------+--------+-----------+---------+-----------+\n|name                   |database|description|tableType|isTemporary|\n+-----------------------+--------+-----------+---------+-----------+\n|airline_count          |default |null       |EXTERNAL |false      |\n|airline_count_managed  |default |null       |MANAGED  |false      |\n|airline_count_unmanaged|default |null       |EXTERNAL |false      |\n|events_managed         |default |null       |MANAGED  |false      |\n|events_unmanaged       |default |null       |EXTERNAL |false      |\n|src1                   |default |null       |MANAGED  |false      |\n|src6                   |default |null       |EXTERNAL |false      |\n+-----------------------+--------+-----------+---------+-----------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629444536638_2058736286",
+      "id": "paragraph_1629444536638_2058736286",
+      "dateCreated": "2021-08-20T07:28:56+0000",
+      "dateStarted": "2021-08-20T07:35:22+0000",
+      "dateFinished": "2021-08-20T07:35:23+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2686"
+    },
+    {
+      "text": "sql(\"select * from Airline_Count_unmanaged\").show()",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:35:25+0000",
+      "progress": 100,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+-------------+\n|            country|airline-count|\n+-------------------+-------------+\n|       AEROVARADERO|            1|\n|          ARMSTRONG|            1|\n|            AEROWEE|            1|\n|             AIRMAN|            1|\n|               AUSA|            1|\n|        ACTIVE AERO|            1|\n|          AEROCESAR|            1|\n|              Air S|            1|\n|          SWISSBIRD|            1|\n|           AUDI AIR|            1|\n|          AIR CLASS|            1|\n|           AQUILINE|            1|\n| AIRPORT HELICOPTER|            1|\n|          AIRFLIGHT|            1|\n|   French Polynesia|            1|\n|             AIRNAT|            1|\n|Congo (Brazzaville)|            1|\n|            ASTORIA|            1|\n|             AIRPAC|            1|\n|      French Guiana|            1|\n+-------------------+-------------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=21",
+              "$$hashKey": "object:4743"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=22",
+              "$$hashKey": "object:4744"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629444802828_239576932",
+      "id": "paragraph_1629444802828_239576932",
+      "dateCreated": "2021-08-20T07:33:22+0000",
+      "dateStarted": "2021-08-20T07:35:25+0000",
+      "dateFinished": "2021-08-20T07:35:26+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2687"
+    },
+    {
+      "text": "sql(\"select * from Airline_Count_managed\").show()",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:35:09+0000",
+      "progress": 54,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=19",
+              "$$hashKey": "object:4656"
+            },
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=20",
+              "$$hashKey": "object:4657"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629444832484_710091317",
+      "id": "paragraph_1629444832484_710091317",
+      "dateCreated": "2021-08-20T07:33:52+0000",
+      "dateStarted": "2021-08-20T07:35:09+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2688",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------------------+-------------+\n|             country|airline-count|\n+--------------------+-------------+\n|Canadian Territories|            1|\n|                S.A.|            1|\n|                ACOM|            1|\n|            WATCHDOG|            1|\n|                AUSA|            1|\n|British Virgin Is...|            1|\n|         ACTIVE AERO|            1|\n|          AEROPERLAS|            1|\n|               Air S|            1|\n|              DRAGON|            1|\n|              AZIMUT|            1|\n|             ARIZAIR|            1|\n|              SCHEFF|            1|\n|       AIR FREIGHTER|            1|\n|              Bhutan|            1|\n|             ANTARES|            1|\n|            AIR-MAUR|            1|\n|  AIRPORT HELICOPTER|            1|\n|           AIRFLIGHT|            1|\n|    French Polynesia|            1|\n+--------------------+-------------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "dateFinished": "2021-08-20T07:35:13+0000"
+    },
+    {
+      "user": "anonymous",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=23",
+              "$$hashKey": "object:4899"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629444847295_1551846550",
+      "id": "paragraph_1629444847295_1551846550",
+      "dateCreated": "2021-08-20T07:34:07+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2689",
+      "text": "// location of the files that make up the table\nspark.read.table(\"Airline_Count_managed\").inputFiles",
+      "dateUpdated": "2021-08-20T07:36:34+0000",
+      "dateFinished": "2021-08-20T07:35:49+0000",
+      "dateStarted": "2021-08-20T07:35:48+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mres15\u001b[0m: \u001b[1m\u001b[32mArray[String]\u001b[0m = Array(s3a://spark/warehouse/airline_count_managed/part-00005-1f43bf37-00a2-47a2-8649-cbd733c09517-c000.snappy.parquet, s3a://spark/warehouse/airline_count_managed/part-00016-93b41247-b6d6-48e6-bd63-a7f16ac2c517-c000.snappy.parquet, s3a://spark/warehouse/airline_count_managed/part-00013-6dede130-e45f-4301-8f27-fff02067fb11-c000.snappy.parquet, s3a://spark/warehouse/airline_count_managed/part-00002-975fa074-4285-49ad-9fc2-ddb20e7a55b6-c000.snappy.parquet, s3a://spark/warehouse/airline_count_managed/part-00047-452dfc33-cbc0-4a95-933d-795798773baa-c000.snappy.parquet, s3a://spark/warehouse/airline_count_managed/part-00018-4ab1e970-cb64-446d-803f-6d98aba25a6d-c000.snappy.parquet, s3a://spark/warehouse/airline_count_managed/part-00032-be0acc97-...\n"
+          }
+        ]
+      }
+    },
+    {
+      "user": "anonymous",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=24",
+              "$$hashKey": "object:4904"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629444957305_813677328",
+      "id": "paragraph_1629444957305_813677328",
+      "dateCreated": "2021-08-20T07:35:57+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:4794",
+      "text": "// location of the files that make up the table\nspark.read.table(\"Airline_Count_unmanaged\").inputFiles",
+      "dateUpdated": "2021-08-20T07:36:43+0000",
+      "dateFinished": "2021-08-20T07:36:09+0000",
+      "dateStarted": "2021-08-20T07:36:08+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mres16\u001b[0m: \u001b[1m\u001b[32mArray[String]\u001b[0m = Array(s3a://word-count/airlines-count/airlines-by-country2/part-00021-4deef5e7-796c-48e8-84cd-d39cae1589ba-c000.snappy.parquet, s3a://word-count/airlines-count/airlines-by-country2/part-00032-1de9f250-b368-4ebd-812c-55f9b270ee95-c000.snappy.parquet, s3a://word-count/airlines-count/airlines-by-country2/part-00044-f970d263-4636-4642-89a2-b89c746db948-c000.snappy.parquet, s3a://word-count/airlines-count/airlines-by-country2/part-00030-1dc3f550-7b6f-44d1-afdf-ae325d2b22a1-c000.snappy.parquet, s3a://word-count/airlines-count/airlines-by-country2/part-00006-182fa7cd-070d-4340-9100-aa804cfb0a6d-c000.snappy.parquet, s3a://word-count/airlines-count/airlines-by-country2/part-00051-bf609ab7-07be-4c8a-838b-cec9c79fb9a4-c000.snappy.parquet, s3a://word...\n"
+          }
+        ]
+      }
+    },
+    {
+      "user": "anonymous",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://55833f36894b:4040/jobs/job?id=25",
+              "$$hashKey": "object:5379"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629445065697_1691463591",
+      "id": "paragraph_1629445065697_1691463591",
+      "dateCreated": "2021-08-20T07:37:45+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:5264",
+      "text": "%spark\n// show the history of the table\nsql(\"describe history Airline_Count_managed\").show(10,false)",
+      "dateUpdated": "2021-08-20T07:38:36+0000",
+      "dateFinished": "2021-08-20T07:38:20+0000",
+      "dateStarted": "2021-08-20T07:38:18+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------+-------------------+------+--------+---------------------------------+------------------------------------------------------------------------+----+--------+---------+-----------+--------------+-------------+---------------------------------------------------------------+------------+\n|version|timestamp          |userId|userName|operation                        |operationParameters                                                     |job |notebook|clusterId|readVersion|isolationLevel|isBlindAppend|operationMetrics                                               |userMetadata|\n+-------+-------------------+------+--------+---------------------------------+------------------------------------------------------------------------+----+--------+---------+-----------+--------------+-------------+---------------------------------------------------------------+------------+\n|0      |2021-08-20 07:32:55|null  |null    |CREATE OR REPLACE TABLE AS SELECT|[isManaged -> true, description ->, partitionBy -> [], properties -> {}]|null|null    |null     |null       |null          |false        |[numFiles -> 52, numOutputBytes -> 41456, numOutputRows -> 278]|null        |\n+-------+-------------------+------+--------+---------------------------------+------------------------------------------------------------------------+----+--------+---------+-----------+--------------+-------------+---------------------------------------------------------------+------------+\n\n"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%md\n\n## That's it!\n\nWe've shown how to:\n1. Load data from s3\n2. Different ways of representing it (Dataframes vs. DataSets)\n3. Did a basic aggregation and count problem\n4. Saved the results back to MinIO\n5. Done so in a Zeppelin notebook enviroment with no local installations\n\n## Where do you go from here?\nZeppelin provides additional notebooks and interpreters to experimet with.\nI think it's a good way to get a \"taste\" of how to work with the different data engines and experiment.\nYou can try going throught the different example notebooks in Zeppelin.\n\nEnjoy!\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:37:44+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true,
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>That&rsquo;s it!</h2>\n<p>We&rsquo;ve shown how to:</p>\n<ol>\n<li>Load data from s3</li>\n<li>Different ways of representing it (Dataframes vs. DataSets)</li>\n<li>Did a basic aggregation and count problem</li>\n<li>Saved the results back to MinIO</li>\n<li>Done so in a Zeppelin notebook enviroment with no local installations</li>\n</ol>\n<h2>Where do you go from here?</h2>\n<p>Zeppelin provides additional notebooks and interpreters to experimet with.<br />\nI think it&rsquo;s a good way to get a &ldquo;taste&rdquo; of how to work with the different data engines and experiment.<br />\nYou can try going throught the different example notebooks in Zeppelin.</p>\n<p>Enjoy!</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614697220622_1719153455",
+      "id": "paragraph_1614697220622_1719153455",
+      "dateCreated": "2021-03-02T15:00:20+0000",
+      "dateStarted": "2021-08-20T07:37:44+0000",
+      "dateFinished": "2021-08-20T07:37:44+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:2690"
+    },
+    {
+      "text": "%md\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-08-20T07:37:40+0000",
+      "progress": 0,
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1629445060682_2115342586",
+      "id": "paragraph_1629445060682_2115342586",
+      "dateCreated": "2021-08-20T07:37:40+0000",
+      "status": "READY",
+      "focus": true,
+      "$$hashKey": "object:5161"
+    }
+  ],
+  "name": "Spark Airline Count Example",
+  "id": "2F8KN6TKG",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0-SNAPSHOT",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/airline-notebooks/Spark Airline Count Example"
+}

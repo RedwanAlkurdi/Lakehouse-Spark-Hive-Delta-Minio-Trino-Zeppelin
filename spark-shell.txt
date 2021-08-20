@@ -1,0 +1,66 @@
+
+# local spark shell without delta lake plugin
+./bin/spark-shell \
+--conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 \
+--conf spark.hadoop.fs.s3a.access.key=abc \
+--conf spark.hadoop.fs.s3a.secret.key=xyzxyzxyz \
+--conf spark.hadoop.fs.s3a.path.style.access=true \
+--conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
+--conf hive.metastore.uris=thrift://hive-metastore:9083 \
+--conf spark.sql.warehouse.dir=s3a://spark/warehouse/ \
+--conf spark.hadoop.metastore.catalog.default=hive
+
+
+# local spark shell session with delta lake plugin
+./bin/spark-shell \
+--packages io.delta:delta-core_2.12:0.8.0 \
+--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
+--conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 \
+--conf spark.hadoop.fs.s3a.access.key=abc \
+--conf spark.hadoop.fs.s3a.secret.key=xyzxyzxyz \
+--conf spark.hadoop.fs.s3a.path.style.access=true \
+--conf spark.sql.warehouse.dir=s3a://spark/warehouse/ \
+--conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
+--conf hive.metastore.uris=thrift://hive-metastore:9083 \
+--conf spark.hadoop.metastore.catalog.default=hive  \
+--conf spark.sql.catalogImplementation=hive  \
+--conf spark.hadoop.fs.s3.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
+--conf spark.hadoop.fs.s3a.connection.ssl.enabled=false
+
+
+# local payspark shell session with delta lake plugin and wrong Minio password (remove ff to make it right)
+./bin/pyspark \
+--packages io.delta:delta-core_2.12:0.8.0 \
+--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
+--conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 \
+--conf spark.hadoop.fs.s3a.access.key=abc \
+--conf spark.hadoop.fs.s3a.secret.key=xyzxyzxyzff \
+--conf spark.hadoop.fs.s3a.path.style.access=true \
+--conf spark.sql.warehouse.dir=s3a://spark/warehouse/ \
+--conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
+--conf hive.metastore.uris=thrift://hive-metastore:9083 \
+--conf spark.hadoop.metastore.catalog.default=hive  \
+--conf spark.sql.catalogImplementation=hive  \
+--conf spark.hadoop.fs.s3.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
+--conf spark.hadoop.fs.s3a.connection.ssl.enabled=false
+
+
+# local Spark SQL shell session without delta lake plugin
+./bin/spark-sql \
+--conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 \
+--conf spark.hadoop.fs.s3a.access.key=abc \
+--conf spark.hadoop.fs.s3a.secret.key=xyzxyzxyz \
+--conf spark.hadoop.fs.s3a.path.style.access=true \
+--conf spark.sql.warehouse.dir=s3a://spark/warehouse/ \
+--conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
+--conf hive.metastore.uris=thrift://hive-metastore:9083 \
+--conf spark.hadoop.metastore.catalog.default=hive  \
+--conf spark.sql.catalogImplementation=hive  \
+--conf spark.hadoop.fs.s3.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
+--conf spark.hadoop.fs.s3a.connection.ssl.enabled=false
+
+
+
+--packages io.delta:delta-core_2.12:1.0.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"

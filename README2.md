@@ -3,21 +3,25 @@
 components:
 
 - Spark 3.0 with Delta lake preconfigured (http://localhost:8080/ spark master, http://localhost:4040/ spark context)
-- Apache zeppelin (http://localhost:9090/
+- Apache zeppelin (http://localhost:9090/)
 - Trino (http://localhost:8090/)
-- Hive metastore (remote)
+- Hive metastore (remote with mariadb)
 - Minio (http://localhost:9001/)
 
 
 A Lake house POC implementation
 
-This is a "sandbox" repository for learning about setting up basic spark sandboxes using [zeppelin](https://github.com/apache/zeppelin) and [spark](https://spark.apache.org/) to perform some simple data exploration and manipulation.
 
 ## Prerequisites
 * [docker engine version 20.10.2](https://www.docker.com/products/docker-desktop)
 * [docker-compose version 1.27.4](https://docs.docker.com/compose/install/)
 
-## Start your local spark environment
+## Start your local environment
+
+
+docker-compose -f docker-compose.yml -f docker-compose-zeppelin.yml -f docker-compose_HiveMS.yml up
+
+
 * Start your local spark cluster by running: `docker-compose up`
   * This will build local spark docker images for spark master and worker
   * It will start a simple standalone spark cluster with a single worker

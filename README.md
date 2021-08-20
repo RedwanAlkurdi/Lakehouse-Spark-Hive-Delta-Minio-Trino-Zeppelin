@@ -66,3 +66,22 @@ A Lake house POC implementation
 ## What's next?
 * Once in the zeppelin ui, choose any of the tutorials and start experimenting.
 * The custom tutorial notebook written for this repository are the ones under the `airline-notebooks`
+
+
+
+if you have any questions you can open up an issue :)
+
+
+This repo builds on the work which is in these two repos:
+* https://github.com/omrisk/spark-local-env
+* https://github.com/arempter/hive-metastore-docker
+
+
+
+
+The next upgrade will have the following architecture: (Soon!)
+
+
+
+
+![Architecture](imgs/CT2.png "Architecture")

@@ -60,7 +60,7 @@ A Lake house POC implementation
 
 `./trino.jar --server localhost:8090 --catalog hive --schema default`
 
-* We've also started a Hive Metastore instance which uses a Mariadb instance, this metastore is used connected to all the other services
+* We've also started a Hive Metastore instance which uses a Mariadb instance, this metastore is connected to all the other services
 
 
 ## What's next?

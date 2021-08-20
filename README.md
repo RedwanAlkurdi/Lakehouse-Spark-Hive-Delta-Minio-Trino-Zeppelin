@@ -78,10 +78,3 @@ This repo builds on the work which is in these two repos:
 
 
 
-
-The next upgrade will have the following architecture: (Soon!)
-
-
-
-
-![Architecture](imgs/CT2.png "Architecture")

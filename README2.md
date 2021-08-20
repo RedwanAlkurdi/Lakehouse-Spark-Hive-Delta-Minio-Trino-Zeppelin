@@ -28,7 +28,6 @@ A Lake house POC implementation
   * it will build a Trino 1 node cluster
   * it will build a Zeppelin server and configure spark and a few datasets/demos
   * it will build a stand-alone Hive metastore and make it accessible to spark and Trino
-  * it will start a simple standalone spark cluster with a single worker
   * it will build a minio s3 service will also be launched, you can read more about this super useful project [here](https://github.com/localstack/localstack)
 * This may take a few minutes the first time you run it
 

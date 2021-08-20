@@ -65,4 +65,4 @@ A Lake house POC implementation
 
 ## What's next?
 * Once in the zeppelin ui, choose any of the tutorials and start experimenting.
-* The custom tutorial notebook written for this repository are the ones under the `workcount-notebooks`
+* The custom tutorial notebook written for this repository are the ones under the `airline-notebooks`

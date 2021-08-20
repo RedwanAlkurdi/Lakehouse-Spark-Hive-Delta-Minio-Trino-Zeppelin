@@ -52,7 +52,7 @@ A Lake house POC implementation
 21270,"Air Carnival","","2S",\N,"","India","Y"
 21317,"Svyaz Rossiya","Russian Commuter ","7R","SJM","RussianConnecty","Russia","Y"
 ```
-* We've also started a Zeppelin instance. You can access the notebook UI at [localhost:9090](http://localhost:9090/), there are notebooks with demos inside the zeppelin server. Moreover, you can use the commands in the "spark-shell.txt" inside of the zeppelin container to launch a fully configured spark shell sessions.
+* We've also started a Zeppelin instance. You can access the notebook UI at [localhost:9090](http://localhost:9090/), there are notebooks with demos inside the zeppelin UI under the `airline-notebooks` . Moreover, you can use the commands in the "spark-shell.txt" inside of the zeppelin container to launch a fully configured spark shell sessions.
 ![zeppelin](imgs/zeppelin-splash.png "Zeppelin notebook")
 
 * We've also started a Trino instance which can be accessed via the web UI at [localhost:8090](http://localhost:8090/), or via a terminal by using the "Trino.jar" file to access the Trino node via the CLI. P.S.: the jar is included in the repo/ please make sure that the jar is executable "chmod +x"

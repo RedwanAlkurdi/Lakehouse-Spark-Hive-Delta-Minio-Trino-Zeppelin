@@ -1,4 +1,4 @@
-# LakeHouse 🌟 give a star if you've used it :)
+# LakeHouse 🌟
 
 components:
 

@@ -9,7 +9,7 @@ components:
 - Minio (http://localhost:9001/)
 
 
-A Lake house POC implementation
+A Lake house POC implementation.
 
 ![Architecture](imgs/CT.png "Architecture")
 
